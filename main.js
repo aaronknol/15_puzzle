@@ -10,7 +10,7 @@ var game = () => {
         [13, 14, 15, null]
     ];
 
-    const cells = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, null];
+    let cells = Array[16];
 
     let blankCellCoordinates;
 
@@ -66,7 +66,7 @@ var game = () => {
         }
     }
 
-    boardClickHandler = (e) => {console.log('click')
+    boardClickHandler = (e) => {
         const xCoordinate = e.target.x;
         const yCoordinate = e.target.y;
 
@@ -98,6 +98,31 @@ var game = () => {
             }
         }
         
+        checkIfWon();
+    }
+
+    const clearBoard = () => {
+        board.innerHTML = '';
+    }
+
+    const checkIfWon = () => {
+        const winningGameBoard = [
+            [1, 2, 3, 4],
+            [5, 6, 7, 8],
+            [9, 10, 11, 12],
+            [13, 14, 15, null]
+        ];
+
+        if (JSON.stringify(winningGameBoard) === JSON.stringify(game_board)) {
+            if(window.confirm('Congratulations! You have solved the puzzle! Would you like to play again?')) {
+                clearBoard();
+                init();
+            }
+        }
+    }
+
+    const generateCells = () => {
+        cells = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, null];
     }
 
     const setBlankCoords = (y, x) => {
@@ -131,7 +156,8 @@ var game = () => {
     }
 
     const init = () => {
-        generateBoard()
+        generateCells();
+        generateBoard();
     }
 
     return {
