@@ -12,7 +12,7 @@ var game = () => {
 
     const cells = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, null];
 
-    let blankCellCordinates = [];
+    let blankCellCoordinates;
 
     // shuffle the 16 item array aroudn into random order
     // taken from stack overflow: https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
@@ -36,6 +36,35 @@ var game = () => {
         return domElement;
     }
 
+    moveCells = (target, xCoordinate, yCoordinate, direction) => {
+        console.log(blankCellCoordinates)
+        game_board[yCoordinate][xCoordinate] = null;
+        game_board[blankCellCoordinates[0]][blankCellCoordinates[1]] =  parseInt(target.textContent, 10);
+
+        var targetEl = (blankCellCoordinates[0] * 4) + (blankCellCoordinates[1]);
+
+        if (direction === 'down') {
+            target.style.top =  parseInt(target.style.top, 10) + 50 + 'px';
+            target.y = target.y + 1;
+        }
+    }
+
+    boardClickHandler = (e) => {
+        const xCoordinate = e.target.x;
+        const yCoordinate = e.target.y;
+
+        // moving down
+        if (xCoordinate === blankCellCoordinates[1]) {
+            if (yCoordinate + 1 === blankCellCoordinates[0]) {
+                moveCells(e.target, xCoordinate, yCoordinate, 'down');
+            }
+        }
+    }
+
+    const setBlankCoords = (y, x) => {
+        blankCellCoordinates = [y, x];
+    }
+
     const generateBoard = () => {
         // loop through the 2 dimensional array from left to right, then top to bottom
         // inserting a number from cells array in the position currently looped to
@@ -52,12 +81,14 @@ var game = () => {
                 if (game_board[y][x] !== null) {
                     board.appendChild(createElement(x, y));
                 } else {
-                    blankCellCordinates = [y, x];
+                    setBlankCoords(y, x);
                 }
 
                 shuffledCells.shift();   // remove the first element which was just inserted onto the board
             }
         }
+
+        board.addEventListener('click', boardClickHandler);
     }
 
     const init = () => {
