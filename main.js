@@ -22,6 +22,18 @@ var game = () => {
         return a;
     }
 
+    const createElement = (x, y) => {
+        const domElement = document.createElement('div');
+        domElement.setAttribute('class', 'cell');
+        domElement.style.left= x * 50;
+        domElement.style.top = y * 50;
+        domElement.x = x;
+        domElement.y = y;
+        domElement.textContent = game_board[y][x];
+
+        return domElement;
+    }
+
     const generateBoard = () => {
         // loop through the 2 dimensional array from left to right, then top to bottom
         // inserting a number from cells array in the position currently looped to
@@ -33,14 +45,7 @@ var game = () => {
                 //place the first element of the cells array on the board
                 
                 game_board[y][x] = shuffledCells[0];
-                var domElement = document.createElement('div');
-                domElement.setAttribute('class', 'cell');
-                domElement.style.left= x * 50;
-                domElement.style.top = y * 50;
-                domElement.x = x;
-                domElement.y = y;
-                domElement.textContent = game_board[y][x];
-                board.appendChild(domElement);
+                board.appendChild(createElement(x, y));
                 shuffledCells.shift();   // remove the first element which was just inserted onto the board
             }
         }
