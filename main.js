@@ -37,9 +37,11 @@ var game = () => {
     }
 
     moveCells = (target, xCoordinate, yCoordinate, direction) => {
-        console.log(blankCellCoordinates)
+        
         game_board[yCoordinate][xCoordinate] = null;
         game_board[blankCellCoordinates[0]][blankCellCoordinates[1]] =  parseInt(target.textContent, 10);
+
+        setBlankCoords(yCoordinate, xCoordinate);
 
         var targetEl = (blankCellCoordinates[0] * 4) + (blankCellCoordinates[1]);
 
@@ -47,9 +49,24 @@ var game = () => {
             target.style.top =  parseInt(target.style.top, 10) + 50 + 'px';
             target.y = target.y + 1;
         }
+
+        if (direction === 'up') {
+            target.style.top =  parseInt(target.style.top, 10) - 50 + 'px';
+            target.y = target.y - 1;
+        }
+
+        if (direction === 'left') {
+            target.style.left =  parseInt(target.style.left, 10) - 50 + 'px';
+            target.x = target.x - 1;
+        }
+
+        if (direction === 'right') {
+            target.style.left =  parseInt(target.style.left, 10) + 50 + 'px';
+            target.x = target.x + 1;
+        }
     }
 
-    boardClickHandler = (e) => {
+    boardClickHandler = (e) => {console.log('click')
         const xCoordinate = e.target.x;
         const yCoordinate = e.target.y;
 
@@ -59,6 +76,28 @@ var game = () => {
                 moveCells(e.target, xCoordinate, yCoordinate, 'down');
             }
         }
+
+        // moving up
+        if (xCoordinate === blankCellCoordinates[1]) {
+            if (yCoordinate - 1 === blankCellCoordinates[0]) {
+                moveCells(e.target, xCoordinate, yCoordinate, 'up');
+            }
+        }
+
+        // moving left
+        if (xCoordinate -1 === blankCellCoordinates[1]) {
+            if (yCoordinate === blankCellCoordinates[0]) {
+                moveCells(e.target, xCoordinate, yCoordinate, 'left');
+            }
+        }
+
+        // moving right
+        if (xCoordinate +1 === blankCellCoordinates[1]) {
+            if (yCoordinate === blankCellCoordinates[0]) {
+                moveCells(e.target, xCoordinate, yCoordinate, 'right');
+            }
+        }
+        
     }
 
     const setBlankCoords = (y, x) => {
