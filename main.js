@@ -37,7 +37,7 @@ var game = () => {
         return domElement;
     }
 
-    moveCells = (target, xCoordinate, yCoordinate, direction) => {
+    const moveCells = (target, xCoordinate, yCoordinate, direction) => {
         
         game_board[yCoordinate][xCoordinate] = null;
         game_board[blankCellCoordinates[0]][blankCellCoordinates[1]] =  parseInt(target.textContent, 10);
@@ -67,79 +67,95 @@ var game = () => {
         }
     }
 
-    boardClickHandler = (e) => {
+    const boardClickHandler = (e) => {
         const xCoordinate = e.target.x;
         const yCoordinate = e.target.y;
 
-        // moving down
-        if (xCoordinate === blankCellCoordinates[1]) {
-            if (yCoordinate + 1 === blankCellCoordinates[0]) {
-                moveCells(e.target, xCoordinate, yCoordinate, 'down');
-            }
+        if (canMove(xCoordinate, yCoordinate, 'down')) {
+            moveCells(e.target, xCoordinate, yCoordinate, 'down');
         }
 
         // moving up
-        if (xCoordinate === blankCellCoordinates[1]) {
-            if (yCoordinate - 1 === blankCellCoordinates[0]) {
-                moveCells(e.target, xCoordinate, yCoordinate, 'up');
-            }
+        if (canMove(xCoordinate, yCoordinate, 'up')) {
+            moveCells(e.target, xCoordinate, yCoordinate, 'up');
         }
 
         // moving left
-        if (xCoordinate -1 === blankCellCoordinates[1]) {
-            if (yCoordinate === blankCellCoordinates[0]) {
-                moveCells(e.target, xCoordinate, yCoordinate, 'left');
-            }
+        if (canMove(xCoordinate, yCoordinate, 'left')) {
+            moveCells(e.target, xCoordinate, yCoordinate, 'left');
         }
 
         // moving right
-        if (xCoordinate +1 === blankCellCoordinates[1]) {
-            if (yCoordinate === blankCellCoordinates[0]) {
-                moveCells(e.target, xCoordinate, yCoordinate, 'right');
-            }
+        if (canMove(xCoordinate, yCoordinate, 'right')) {
+            moveCells(e.target, xCoordinate, yCoordinate, 'right');
         }
         
         checkIfWon();
     }
 
-    boardKeyHandler = (e) => {
+    const canMove = (xCoordinate, yCoordinate, direction) => {
+        if (direction === 'down') {
+            if (xCoordinate === blankCellCoordinates[1]) {
+                if (yCoordinate + 1 === blankCellCoordinates[0]) {
+                    return true;
+                }
+            }
+        }
+
+        if (direction === 'up') {
+            if (xCoordinate === blankCellCoordinates[1]) {
+                if (yCoordinate - 1 === blankCellCoordinates[0]) {
+                    return true;
+                }
+            }
+        }
+
+        if (direction === 'left') {
+            if (xCoordinate -1 === blankCellCoordinates[1]) {
+                if (yCoordinate === blankCellCoordinates[0]) {
+                    return true;
+                }
+            }
+        }
+
+        if (direction === 'right') {
+            if (xCoordinate +1 === blankCellCoordinates[1]) {
+                if (yCoordinate === blankCellCoordinates[0]) {
+                    return true;
+                }
+            }
+        }
+    }
+
+    const boardKeyHandler = (e) => {
         const xCoordinate = e.target.x;
         const yCoordinate = e.target.y;
-        console.log('keyup ', e.keyCode);
 
         // down
         if (e.keyCode === 40) {
-            if (xCoordinate === blankCellCoordinates[1]) {
-                if (yCoordinate + 1 === blankCellCoordinates[0]) {
-                    moveCells(e.target, xCoordinate, yCoordinate, 'down');
-                }
+            if (canMove(xCoordinate, yCoordinate, 'down')) {
+                moveCells(e.target, xCoordinate, yCoordinate, 'down');
             }
         }
 
         // up
         if (e.keyCode === 38) {
-            if (xCoordinate === blankCellCoordinates[1]) {
-                if (yCoordinate - 1 === blankCellCoordinates[0]) {
-                    moveCells(e.target, xCoordinate, yCoordinate, 'up');
-                }
+            if (canMove(xCoordinate, yCoordinate, 'up')) {
+                moveCells(e.target, xCoordinate, yCoordinate, 'up');
             }
         }
 
         // left
         if (e.keyCode === 37) {
-            if (xCoordinate -1 === blankCellCoordinates[1]) {
-                if (yCoordinate === blankCellCoordinates[0]) {
-                    moveCells(e.target, xCoordinate, yCoordinate, 'left');
-                }
+            if (canMove(xCoordinate, yCoordinate, 'left')) {
+                moveCells(e.target, xCoordinate, yCoordinate, 'left');
             }
         }
 
         // right
         if (e.keyCode === 39) {
-            if (xCoordinate +1 === blankCellCoordinates[1]) {
-                if (yCoordinate === blankCellCoordinates[0]) {
-                    moveCells(e.target, xCoordinate, yCoordinate, 'right');
-                }
+            if (canMove(xCoordinate, yCoordinate, 'right')) {
+                moveCells(e.target, xCoordinate, yCoordinate, 'right');
             }
         }
     }
