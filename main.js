@@ -27,6 +27,7 @@ var game = () => {
     const createElement = (x, y) => {
         const domElement = document.createElement('div');
         domElement.setAttribute('class', 'cell');
+        domElement.setAttribute('tabindex', '0');
         domElement.style.left= x * 50 + 'px';
         domElement.style.top = y * 50 + 'px';
         domElement.x = x;
@@ -101,6 +102,48 @@ var game = () => {
         checkIfWon();
     }
 
+    boardKeyHandler = (e) => {
+        const xCoordinate = e.target.x;
+        const yCoordinate = e.target.y;
+        console.log('keyup ', e.keyCode);
+
+        // down
+        if (e.keyCode === 40) {
+            if (xCoordinate === blankCellCoordinates[1]) {
+                if (yCoordinate + 1 === blankCellCoordinates[0]) {
+                    moveCells(e.target, xCoordinate, yCoordinate, 'down');
+                }
+            }
+        }
+
+        // up
+        if (e.keyCode === 38) {
+            if (xCoordinate === blankCellCoordinates[1]) {
+                if (yCoordinate - 1 === blankCellCoordinates[0]) {
+                    moveCells(e.target, xCoordinate, yCoordinate, 'up');
+                }
+            }
+        }
+
+        // left
+        if (e.keyCode === 37) {
+            if (xCoordinate -1 === blankCellCoordinates[1]) {
+                if (yCoordinate === blankCellCoordinates[0]) {
+                    moveCells(e.target, xCoordinate, yCoordinate, 'left');
+                }
+            }
+        }
+
+        // right
+        if (e.keyCode === 39) {
+            if (xCoordinate +1 === blankCellCoordinates[1]) {
+                if (yCoordinate === blankCellCoordinates[0]) {
+                    moveCells(e.target, xCoordinate, yCoordinate, 'right');
+                }
+            }
+        }
+    }
+
     const clearBoard = () => {
         board.innerHTML = '';
     }
@@ -153,6 +196,7 @@ var game = () => {
         }
 
         board.addEventListener('click', boardClickHandler);
+        board.addEventListener('keyup', boardKeyHandler);
     }
 
     const init = () => {
